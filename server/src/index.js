@@ -1,3 +1,5 @@
+// import dotenv from 'dotenv'
+
 import cors from 'cors'
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
@@ -6,16 +8,30 @@ import schema from './schema'
 import resolvers from './resolvers'
 import models, { sequelize } from './models'
 
+// dotenv.config()
+
 const app = express()
 app.use(cors())
 
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
-  context: {
-    models,
-    me: models.User.findByLogin('rwieruch'),
+  formatError: error => {
+    // remove the internal sequelize error message
+    // leave only the important validation error
+    const message = error.message
+      .replace('SequelizeValidationError: ', '')
+      .replace('Validation error: ', '')
+
+    return {
+      ...error,
+      message,
+    }
   },
+  context: async () => ({
+    models,
+    me: await models.User.findByLogin('rwieruch'),
+  }),
 })
 
 server.applyMiddleware({ app, path: '/graphql' })
@@ -27,8 +43,8 @@ sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
     createUsersWithMessages()
   }
 
-  server.listen({ url }, () => {
-    console.log(`Apollo Server on ${url}`)
+  app.listen({ port: 8000 }, () => {
+    console.log('Apollo Server on http://localhost:8000/graphql')
   })
 })
 

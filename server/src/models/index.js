@@ -1,23 +1,21 @@
+import dotenv from 'dotenv'
 import Sequelize from 'sequelize'
+dotenv.config()
+// const {
+//   DATABASE_USER,
+//   DATABASE_PASSWORD,
+//   DATABASE_HOST,
+//   DATABASE,
+// } = process.env
 
-const {
-  DATABASE_USER,
-  DATABASE_PASSWORD,
-  DATABASE_HOST,
-  DATABASE,
-} = process.env
-
-//   'postgres://nimmnloonyebwg:30f86264c860a6c46e706c7fe200b080932f382932350f30658dc44703a797e5@ec2-54-163-230-178.compute-1.amazonaws.com:5432/dce2jdo78v21el',
-const sequelize = new Sequelize(
-  `postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:5432/${DATABASE}`,
-  {
+// `postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:5432/${DATABASE}`,
+const sequelize = new Sequelize(process.env.HEROKU_PG_DB, {
+  ssl: true,
+  dialectOptions: {
     ssl: true,
-    dialectOptions: {
-      ssl: true,
-    },
-    operatorsAliases: false,
   },
-)
+  operatorsAliases: false,
+})
 
 // const sequelize = new Sequelize(DATABASE, DATABASE_USER, DATABASE_PASSWORD, {
 //   dialect: 'postgres',

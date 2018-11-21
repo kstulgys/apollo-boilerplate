@@ -1,10 +1,10 @@
 import Sequelize from 'sequelize'
 
 const {
-  DATABASE_USER = 'nimmnloonyebwg',
-  DATABASE_PASSWORD = '30f86264c860a6c46e706c7fe200b080932f382932350f30658dc44703a797e5',
-  DATABASE_HOST = 'ec2-54-163-230-178.compute-1.amazonaws.com',
-  DATABASE = 'dce2jdo78v21el',
+  DATABASE_USER,
+  DATABASE_PASSWORD,
+  DATABASE_HOST,
+  DATABASE,
 } = process.env
 
 //   'postgres://nimmnloonyebwg:30f86264c860a6c46e706c7fe200b080932f382932350f30658dc44703a797e5@ec2-54-163-230-178.compute-1.amazonaws.com:5432/dce2jdo78v21el',
